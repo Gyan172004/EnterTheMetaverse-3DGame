@@ -39,3 +39,7 @@ Enter the Metaverse was developed as a part of the Hackofiesta hackathon conduct
 3. Shikhar Raj
 4. Kota Karthik
 5. Sanskar Sahu
+
+#### Google drive link 
+File size was too long so we uploaded whole project file on Google drive
+https://drive.google.com/drive/folders/16EhNsOFNM_NLi31TSlyyGSFLV_2PQAuH?usp=share_link
