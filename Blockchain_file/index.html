@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY MINT PAGE</title>
+    <style>
+      .container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p id="account">...</p>
+      <button id="sign-in-button">SIGN IN</button>
+      <button id="sign-out-button">SIGN OUT</button>
+    </div>
+    <h1 id="mint-header">MINT STUFF</h1>
+    <div id="mint">
+      <input type="text" id="token-id" placeholder="token-id" />
+      <input type="text" id="title" placeholder="Title" />
+      <input type="text" id="image-url" placeholder="image-url" />
+      <button id="mint-button">MINT</button>
+    </div>
+    <div id="tokens"></div>
+    <script src="https://cdn.jsdelivr.net/npm/near-api-js@0.45.1/dist/near-api-js.min.js"></script>
+
+    <script type="module">
+      import { getConfig } from "./config.js";
+      const nearConfig = getConfig("testnet");
+      const { connect, WalletConnection, Contract, utils } = nearApi;
+      const signInButton = document.getElementById("sign-in-button");
+      const signOutButton = document.getElementById("sign-out-button");
+
+      const accountP = document.getElementById("account");
+      const mintDiv = document.getElementById("mint");
+      const mintButton = document.getElementById("mint-button");
+      const tokenIdInput = document.getElementById("token-id");
+      const titleInput = document.getElementById("title");
+      const imageUrlInput = document.getElementById("image-url");
+      const nearConnection = await connect(nearConfig);
+      const walletConnection = new WalletConnection(nearConnection, "unity");
+
+      signInButton.onclick = async () => {
+        console.log(walletConnection);
+        await walletConnection.requestSignIn({ url: nearConfig.contractName });
+      };
+
+      signOutButton.onclick = () => {
+        walletConnection.signOut();
+        window.location.reload();
+      };
+
+      mintButton.onclick = async () => {
+        console.log(
+          "Minting...",
+          tokenIdInput.value,
+          titleInput.value,
+          imageUrlInput.value
+        );
+        const accountId = walletConnection.getAccountId();
+        console.log(accountId);
+        const account = walletConnection.account();
+        console.log(account);
+        const contract = await new Contract(account, nearConfig.contractName, {
+          viewMethods: ["check_token"],
+          changeMethods: ["nft_mint"],
+        });
+        console.log(contract);
+        console.log(contract.nft_mint);
+        // Sahi chl rha
+        const mint = await contract.nft_mint({
+          // url: "",
+          token_id: tokenIdInput.value || 0,
+          metadata: {
+            title: titleInput.value,
+            description:
+              "A character in a course by Morgan Page, drawn by Simone Silva",
+            media: imageUrlInput.value,
+          },
+          receiver_id: accountId,
+      
+        });
+      };
+
+      window.onload = async () => {
+        let isSignedIn = walletConnection.isSignedIn();
+        if (isSignedIn) {
+          console.log("signed in!");
+          signInButton.style.display = "none";
+          let accountId = walletConnection.getAccountId();
+          accountP.innerText = "signed in as " + { accountId };
+        
+        } else {
+          console.log(" not signed in!");
+          signOutButton.style.display = "none";
+          mintDiv.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>
