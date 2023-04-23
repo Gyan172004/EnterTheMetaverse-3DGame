@@ -1,0 +1,35 @@
+using UnityEngine;
+using System.Collections;
+
+public class KnockbackScript : MonoBehaviour {
+
+    public float knockbackForce = 100;
+
+    void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.CompareTag("Body")) { // Check if the collided object is the player
+            Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        }
+        if (collision.gameObject.CompareTag("Sphere(20)")) { // Check if the collided object is the player
+            Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        }
+        if (collision.gameObject.CompareTag("Sphere(19)")) { // Check if the collided object is the player
+            Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        }
+        if (collision.gameObject.CompareTag("Sphere(16)")) { // Check if the collided object is the player
+            Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        }
+        if (collision.gameObject.CompareTag("Sphere(22)")) { // Check if the collided object is the player
+            Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+        }
+    }
+}

@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HitPlayer : MonoBehaviour {
+    public float hitForce = 100.0f;
+
+    void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+            if (playerRb != null) {
+                Vector3 direction = collision.contacts[0].point - transform.position;
+                direction = direction.normalized;
+                playerRb.AddForce(direction * hitForce, ForceMode.Impulse);
+            }
+        }
+    }
+}
+
+
